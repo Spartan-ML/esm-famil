@@ -7,6 +7,7 @@ import { useRoom } from "@/hooks/useRoom";
 import { usePlayer } from "@/hooks/usePlayer";
 import { useTheme } from "@/lib/theme-context";
 import { useLocale } from "@/lib/locale-context";
+import { Btn } from "@/components/ui/Btn";
 import { PageShell } from "@/components/layout/PageShell";
 import { LetterPicker } from "@/components/game/LetterPicker";
 import { supabase } from "@/lib/supabase";
@@ -296,40 +297,15 @@ export default function ScoreboardPage() {
 
               <LetterPicker selected={nextLetter} onChange={setNextLetter} />
 
-              <div className="flex flex-col gap-2 pt-1">
-                <motion.button
-                  whileHover={nextLetter ? { scale: 1.02 } : {}}
-                  whileTap={nextLetter ? { scale: 0.97 } : {}}
-                  onClick={handleNextRound}
-                  disabled={!nextLetter || loading}
-                  className={`w-full py-4 rounded-2xl text-base font-bold shadow-lg transition-all
-                    ${nextLetter && !loading
-                      ? `${theme.button} ${theme.buttonHover}`
-                      : `${theme.bgMuted} ${theme.textMuted} opacity-40 cursor-not-allowed`
-                    }`}
-                >
-                  {loading ? (
-                    <span className="flex items-center justify-center gap-2">
-                      <motion.span
-                        animate={{ rotate: 360 }}
-                        transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
-                        className="inline-block w-4 h-4 border-2 border-white/40 border-t-white rounded-full"
-                      />
-                      {t.nextRound}…
-                    </span>
-                  ) : `▶ ${t.nextRound}`}
-                </motion.button>
+              <div className="flex flex-col gap-3 pt-1">
+                <Btn size="lg" fullWidth loading={loading} disabled={!nextLetter} onClick={handleNextRound}>
+                  ▶ {t.nextRound}
+                </Btn>
 
                 {isHost && (
-                  <motion.button
-                    whileHover={{ scale: 1.01 }}
-                    whileTap={{ scale: 0.98 }}
-                    onClick={handleEndGame}
-                    disabled={loading}
-                    className={`w-full py-3 rounded-2xl text-sm font-semibold border ${theme.border} ${theme.textMuted} hover:opacity-70 transition-opacity`}
-                  >
+                  <Btn size="md" fullWidth variant="ghost" disabled={loading} onClick={handleEndGame}>
                     {t.endGame}
-                  </motion.button>
+                  </Btn>
                 )}
               </div>
             </motion.div>

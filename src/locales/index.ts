@@ -71,6 +71,8 @@ export const en = {
   playAgain: "Play Again",
   backHome: "Back to Home",
 
+  needMorePlayers: "At least 2 players needed to start.",
+
   // Errors
   errorGeneric: "Something went wrong. Please try again.",
   sessionExpired: "Your session has expired. Please rejoin.",
@@ -146,6 +148,7 @@ export const fa: typeof en = {
   playAgain: "بازی مجدد",
   backHome: "بازگشت به خانه",
 
+  needMorePlayers: "حداقل ۲ بازیکن برای شروع لازم است.",
   errorGeneric: "مشکلی پیش آمد. دوباره تلاش کنید.",
   sessionExpired: "نشست شما منقضی شده است. دوباره وارد شوید.",
 

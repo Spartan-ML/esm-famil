@@ -13,6 +13,7 @@ import { useLocale } from "@/lib/locale-context";
 import { getSession, clearSession } from "@/lib/session";
 import { getPlayerByToken, updateRoom } from "@/lib/rooms";
 import { Player, RoundMode } from "@/types";
+import { Btn } from "@/components/ui/Btn";
 import { supabase } from "@/lib/supabase";
 
 const TIMER_OPTIONS = [30, 60, 90, 120, 180];
@@ -90,7 +91,8 @@ export default function LobbyPage() {
   const canStart =
     currentPlayer?.is_host &&
     filledCategories.length >= 5 &&
-    letter.trim() !== "";
+    letter.trim() !== "" &&
+    players.length >= 2;
 
   const handleStartGame = async () => {
     if (!room || !canStart) return;
@@ -291,39 +293,24 @@ export default function LobbyPage() {
 
             {/* Start / End buttons */}
             <div className="flex flex-col gap-3 pt-2">
-              <motion.button
-                whileHover={canStart ? { scale: 1.02 } : {}}
-                whileTap={canStart ? { scale: 0.97 } : {}}
-                onClick={handleStartGame}
-                disabled={!canStart || starting}
-                className={`w-full py-4 rounded-2xl text-base font-bold shadow-lg transition-all
-                  ${canStart && !starting
-                    ? `${theme.button} ${theme.buttonHover}`
-                    : `${theme.bgMuted} ${theme.textMuted} opacity-40 cursor-not-allowed`
-                  }`}
-              >
-                {starting ? (
-                  <span className="flex items-center justify-center gap-2">
-                    <motion.span
-                      animate={{ rotate: 360 }}
-                      transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                      className="inline-block w-4 h-4 border-2 border-white/40 border-t-white rounded-full"
-                    />
-                    {t.startGame}…
-                  </span>
-                ) : (
-                  t.startGame
-                )}
-              </motion.button>
+              {/* "Need 2 players" hint */}
+              {players.length < 2 && (
+                <motion.p
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className={`text-xs text-center ${theme.textMuted}`}
+                >
+                  {t.needMorePlayers}
+                </motion.p>
+              )}
 
-              <motion.button
-                whileHover={{ scale: 1.01 }}
-                whileTap={{ scale: 0.98 }}
-                onClick={handleEndGame}
-                className={`w-full py-3 rounded-2xl text-sm font-semibold border ${theme.border} ${theme.textMuted} hover:opacity-70 transition-opacity`}
-              >
+              <Btn size="lg" fullWidth loading={starting} disabled={!canStart} onClick={handleStartGame}>
+                {t.startGame}
+              </Btn>
+
+              <Btn size="md" fullWidth variant="ghost" onClick={handleEndGame}>
                 {t.endGame}
-              </motion.button>
+              </Btn>
             </div>
           </motion.div>
         ) : (

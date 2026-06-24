@@ -12,6 +12,7 @@ import { useLocale } from "@/lib/locale-context";
 import { PageShell } from "@/components/layout/PageShell";
 import { supabase } from "@/lib/supabase";
 import { updateRoom } from "@/lib/rooms";
+import { Btn } from "@/components/ui/Btn";
 import { COLOR_THEMES, DEFAULT_THEME } from "@/lib/colors";
 import { PlayerColor } from "@/types";
 
@@ -130,6 +131,7 @@ export default function PlayPage() {
   }
 
   const filledCount = Object.values(answers).filter((v) => v.trim()).length;
+  const allFilled   = filledCount >= categories.length && categories.length > 0;
 
   return (
     <PageShell centered={false}>
@@ -277,30 +279,26 @@ export default function PlayPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9 }}
-              className="fixed bottom-6 left-0 right-0 flex justify-center px-5 z-40"
+              className="fixed bottom-6 left-0 right-0 flex flex-col items-center gap-2 px-5 z-40"
             >
-              <motion.button
-                whileHover={{ scale: 1.04 }}
-                whileTap={{ scale: 0.96 }}
+              {/* Hint when not all fields are filled */}
+              {!allFilled && (
+                <motion.p
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className={`text-xs text-center ${theme.textMuted}`}
+                >
+                  {filledCount}/{categories.length}
+                </motion.p>
+              )}
+              <Btn
+                size="xl"
+                loading={finishing}
+                disabled={!allFilled || locked}
                 onClick={handleFinish}
-                disabled={finishing}
-                className={`px-10 py-4 rounded-2xl text-lg font-black shadow-2xl transition-all
-                  ${theme.button} ${theme.buttonHover}
-                  disabled:opacity-60 disabled:cursor-not-allowed`}
               >
-                {finishing ? (
-                  <span className="flex items-center gap-2">
-                    <motion.span
-                      animate={{ rotate: 360 }}
-                      transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
-                      className="inline-block w-4 h-4 border-2 border-white/40 border-t-white rounded-full"
-                    />
-                    {t.iFinished}
-                  </span>
-                ) : (
-                  `🏁 ${t.iFinished}`
-                )}
-              </motion.button>
+                🏁 {t.iFinished}
+              </Btn>
             </motion.div>
           )}
         </AnimatePresence>

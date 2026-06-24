@@ -1,11 +1,17 @@
+/* ── Fonts ─────────────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap');
+@import url('https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css');
+
 @import "tailwindcss";
 
 :root {
   --background: #0f172a;
   --foreground: #f8fafc;
+  --font-en: 'Roboto', system-ui, -apple-system, sans-serif;
+  --font-fa: 'Vazirmatn', 'Tahoma', system-ui, sans-serif;
 }
 
-* {
+*, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -15,6 +21,10 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Font per language */
+html[lang="en"] body { font-family: var(--font-en); }
+html[lang="fa"] body { font-family: var(--font-fa); }
+
 body {
   background: var(--background);
   color: var(--foreground);
@@ -23,25 +33,45 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Persian font smoothing */
+/*
+ * RTL CENTERING STRATEGY
+ * ─────────────────────────────────────────────────────────────
+ * Setting dir="rtl" makes text-align default to "right".
+ * For UI elements that must stay centered (buttons, headings,
+ * labels, inputs), we force text-align: center.
+ * Only prose/reading text (cards, descriptions) should be
+ * allowed to right-align in RTL.
+ */
+[dir="rtl"] button,
+[dir="rtl"] input,
+[dir="rtl"] h1,
+[dir="rtl"] h2,
+[dir="rtl"] h3,
+[dir="rtl"] label,
+[dir="rtl"] .center-always {
+  text-align: center;
+}
+
+/* Inputs: content aligns to the writing direction but placeholder stays centered */
+[dir="rtl"] input[type="text"],
+[dir="rtl"] input[type="number"] {
+  text-align: right;
+}
+
+/* Letter spacing resets for Arabic/Persian glyphs */
 [dir="rtl"] {
-  font-feature-settings: "kern" 1;
   letter-spacing: 0;
 }
 
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 6px;
-}
-::-webkit-scrollbar-track {
-  background: transparent;
-}
+/* ── Scrollbar ─────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb {
   background: rgba(255,255,255,0.15);
   border-radius: 3px;
 }
 
-/* Reduced motion */
+/* ── Reduced motion ───────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;

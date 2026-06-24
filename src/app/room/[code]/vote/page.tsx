@@ -7,6 +7,7 @@ import { useRoom } from "@/hooks/useRoom";
 import { usePlayer } from "@/hooks/usePlayer";
 import { useTheme } from "@/lib/theme-context";
 import { useLocale } from "@/lib/locale-context";
+import { Btn } from "@/components/ui/Btn";
 import { PageShell } from "@/components/layout/PageShell";
 import { supabase } from "@/lib/supabase";
 import { updateRoom, computeAndSaveScores } from "@/lib/rooms";
@@ -290,25 +291,9 @@ export default function VotePage() {
               exit={{ opacity: 0, scale: 0.95 }}
               className="pt-2"
             >
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.97 }}
-                onClick={handleSubmitVotes}
-                disabled={submitting}
-                className={`w-full py-4 rounded-2xl text-base font-bold shadow-lg transition-all
-                  ${!submitting ? `${theme.button} ${theme.buttonHover}` : `${theme.bgMuted} ${theme.textMuted} opacity-50`}`}
-              >
-                {submitting ? (
-                  <span className="flex items-center justify-center gap-2">
-                    <motion.span
-                      animate={{ rotate: 360 }}
-                      transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
-                      className="inline-block w-4 h-4 border-2 border-white/40 border-t-white rounded-full"
-                    />
-                    {t.submitVotes}…
-                  </span>
-                ) : t.submitVotes}
-              </motion.button>
+              <Btn size="lg" fullWidth loading={submitting} onClick={handleSubmitVotes}>
+                {t.submitVotes}
+              </Btn>
             </motion.div>
           )}
         </AnimatePresence>
